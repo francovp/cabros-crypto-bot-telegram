@@ -8,4 +8,16 @@ const getPrice = (context) => {
 	});
 };
 
-module.exports = { getPrice };
+const cryptoBotCmd = (context) => {
+	const messageSplited = context.message.text.split(' ');
+	const cmd = messageSplited[1];
+	switch (cmd) {
+	case 'id':
+		context.reply(`Chat Id: ${context.update.message.chat.id}`);
+		break;
+	default:
+		// Nothing
+	}
+};
+
+module.exports = { getPrice, cryptoBotCmd };
