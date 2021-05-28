@@ -1,3 +1,5 @@
+const { round10 } = require('../../../helpers');
+
 const fetchSymbolPrice = async (context) => {
 	const axios = require('axios');
 	// Check for parameters;
@@ -11,7 +13,7 @@ const fetchSymbolPrice = async (context) => {
 		// The prices have been successfully retrieved
 		// So build the response object to trigger the success intent
 		if (data.price >= 1) {
-			price = Math.round(data.price);
+			price = round10(data.price, -2);
 		} else {
 			price = data.price;
 		}
