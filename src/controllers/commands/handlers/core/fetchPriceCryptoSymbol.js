@@ -13,7 +13,7 @@ const fetchSymbolPrice = async (context) => {
 		// The prices have been successfully retrieved
 		// So build the response object to trigger the success intent
 		if (data.price >= 1) {
-			price = round10(data.price, -2);
+			price = round10(data.price, -5);
 		} else {
 			price = data.price;
 		}
