@@ -30,7 +30,11 @@ app.post('/webhook/alert', async (req, res) => {
 	bot.telegram.sendMessage(body.chatId, `${body.text}`, { parse_mode: body.parseMode })
 		.then(() => {
 			res.sendStatus(200);
-	});
+		})
+		.catch((error) => {
+			console.debug('webhook/alert handler: Error sending message to bot');
+			console.error(error);
+		});
 });
 
 module.exports = { bot };
