@@ -1,12 +1,11 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 
 const app = express();
 
 // Tell express to use body-parser's urlencoded parsing
-app.use(bodyParser.urlencoded({	extended:false }));
+app.use(express.urlencoded({ extended: false }));
 // Tell express to use body-parser's JSON parsing
-app.use(bodyParser.json());
+app.use(express.json());
 
 // Configurar Cabeseras y CORS
 app.use((req, res, next) => {
