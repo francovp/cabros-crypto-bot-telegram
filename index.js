@@ -1,6 +1,7 @@
 const { getPrice, cryptoBotCmd } = require('./src/controllers/commands');
 const app = require('./app.js');
 const { Telegraf } = require('telegraf');
+const { getRoutes } = require('./src/routes');
 
 const token = process.env.BOT_TOKEN;
 if (token === undefined) {
@@ -25,16 +26,6 @@ app.listen(port, () => {
 	process.once('SIGTERM', () => bot.stop('SIGTERM'));
 });
 
-app.post('/webhook/alert', async (req, res) => {
-	const body = req.body;
-	bot.telegram.sendMessage(body.chatId, `${body.text}`, { parse_mode: body.parseMode })
-		.then(() => {
-			res.sendStatus(200);
-		})
-		.catch((error) => {
-			console.debug('webhook/alert handler: Error sending message to bot');
-			console.error(error);
-		});
-});
+app.use('/api', getRoutes(bot));
 
 module.exports = { bot };
