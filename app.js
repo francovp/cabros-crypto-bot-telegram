@@ -1,6 +1,8 @@
 const express = require('express');
 
 const app = express();
+const cors = require('cors');
+const helmet = require('helmet');
 
 // Tell express to use body-parser's urlencoded parsing
 app.use(express.urlencoded({ extended: false }));
@@ -8,13 +10,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // Configurar Cabeseras y CORS
-app.use((req, res, next) => {
-	res.header('Access-Control-Allow-Origin', '*');
-	res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
-	res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-	res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
-	next();
-});
+app.use(cors());
+
+// Use helmet for improved security
+app.use(helmet());
 
 app.use('/healthcheck', require('express-healthcheck')());
 
