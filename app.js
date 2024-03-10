@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { getRoutes } = require('./src/routes');
 
 const app = express();
 
@@ -19,6 +18,5 @@ app.use((req, res, next) => {
 });
 
 app.use('/healthcheck', require('express-healthcheck')());
-app.use('/api', getRoutes());
 
 module.exports = app;
