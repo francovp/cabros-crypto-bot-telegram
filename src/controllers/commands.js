@@ -1,7 +1,8 @@
 const { fetchSymbolPrice } = require('./commands/handlers/core/fetchPriceCryptoSymbol');
 
 const getPrice = (context) => {
-	fetchSymbolPrice(context).then((result) => {
+	const { symbol } = context;
+	fetchSymbolPrice(symbol).then((result) => {
 		context.reply(`Precio de ${result.symbol} es ${result.price}`);
 	}).catch((error) => {
 		console.log(error);
