@@ -1,19 +1,22 @@
 const { round10 } = require('../../../helpers');
+const { MainClient } = require('binance');
+
+const client = new MainClient({
+	// Optional (default: false) - when true, response strings are parsed to floats (only for known keys).
+	beautifyResponses: true,
+});
 
 const fetchSymbolPrice = async (context) => {
-	const axios = require('axios');
 	// Check for parameters;
 	const messageSplited = context.message.text.split(' ');
 	const symbol = messageSplited[1];
 	try {
-		const axiosResponse = await axios.get(`https://api.binance.com/api/v3/avgPrice?symbol=${symbol}`);
-		// Retrieve the prices from the response object, in USD and EUR
-		const data = axiosResponse.data;
 		let price;
+		const data = await client.getAvgPrice({ symbol: symbol });
 		// The prices have been successfully retrieved
 		// So build the response object to trigger the success intent
 		if (data.price >= 1) {
-			price = round10(data.price, -5);
+			price = round10(data.price, 0);
 		} else {
 			price = data.price;
 		}
