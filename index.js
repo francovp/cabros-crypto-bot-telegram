@@ -19,10 +19,12 @@ app.use('/api', getRoutes(bot));
 app.listen(port, () => {
 	console.log(now + ' - Running server on port ' + port);
 
-	const telegramBotIsEnabled = process.env.ENABLE_TELEGRAM_BOT;
+	const telegramBotIsEnabled = process.env.ENABLE_TELEGRAM_BOT === 'true';
 	console.debug('telegramBotIsEnabled:', telegramBotIsEnabled);
+	const isPreviewEnv = process.env.RENDER === 'true' && process.env.IS_PULL_REQUEST === 'true';
+	console.debug('isPreviewEnv:', isPreviewEnv);
 
-	if (telegramBotIsEnabled === true) {
+	if (telegramBotIsEnabled && !isPreviewEnv) {
 		console.log('Telegram Bot is enabled');
 		bot = new Telegraf(token);
 		bot.command(['precio'], getPrice);
