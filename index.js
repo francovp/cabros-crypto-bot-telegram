@@ -2,6 +2,7 @@ const { getPrice, cryptoBotCmd } = require('./src/controllers/commands');
 const app = require('./app.js');
 const { Telegraf } = require('telegraf');
 const { getRoutes } = require('./src/routes');
+require('dotenv').config();
 
 const token = process.env.BOT_TOKEN;
 if (token === undefined) {

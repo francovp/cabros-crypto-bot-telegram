@@ -24,8 +24,10 @@ const fetchSymbolPrice = async (context) => {
 			symbol: symbol,
 		});
 	} catch (e) {
-		// An error occured during the request to the API
-		// Reject the Promise to say that an error occured while the handler was performing the action
+		// An error occurred during the request to the API
+		// Log the specific error message for better debugging
+		console.error('Error fetching symbol price:', e);
+		// Reject the Promise to say that an error occurred while the handler was performing the action
 		return Promise.reject(e);
 	}
 };
