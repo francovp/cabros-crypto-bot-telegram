@@ -1,0 +1,17 @@
+previewsEnabled: true
+services:
+- type: web
+  plan: free
+  region: ohio
+  name: cabros-crypto-bot-telegram-iac
+  runtime: node
+  startCommand: "npm start"
+  healthCheckPath: /healthcheck
+  envVars:
+  - key: BOT_TOKEN
+    sync: false
+  - key: TELEGRAM_CHAT_ID
+    sync: false
+  - key: ENABLE_TELEGRAM_BOT
+    value: true
+    previewValue: false

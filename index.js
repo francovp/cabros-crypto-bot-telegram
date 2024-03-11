@@ -9,24 +9,30 @@ if (token === undefined) {
 	throw new Error('BOT_TOKEN must be provided!');
 }
 
-const bot = new Telegraf(token);
-
-bot.command(['precio'], getPrice);
-
-bot.command(['cryptobot'], cryptoBotCmd);
+let bot;
 
 const port = process.env.PORT || 80;
 const now = new Date();
 
+app.use('/api', getRoutes(bot));
+
 app.listen(port, () => {
 	console.log(now + ' - Running server on port ' + port);
-	bot.launch();
 
-	// Enable graceful stop
-	process.once('SIGINT', () => bot.stop('SIGINT'));
-	process.once('SIGTERM', () => bot.stop('SIGTERM'));
+	const telegramBotIsEnabled = process.env.ENABLE_TELEGRAM_BOT;
+	console.debug('telegramBotIsEnabled:', telegramBotIsEnabled);
+
+	if (telegramBotIsEnabled === true) {
+		console.log('Telegram Bot is enabled');
+		bot = new Telegraf(token);
+		bot.command(['precio'], getPrice);
+		bot.command(['cryptobot'], cryptoBotCmd);
+		bot.launch();
+
+		// Enable graceful stop
+		process.once('SIGINT', () => bot.stop('SIGINT'));
+		process.once('SIGTERM', () => bot.stop('SIGTERM'));
+	}
 });
-
-app.use('/api', getRoutes(bot));
 
 module.exports = { bot };
