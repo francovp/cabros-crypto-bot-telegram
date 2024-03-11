@@ -6,8 +6,9 @@ const helmet = require('helmet');
 
 // Tell express to use body-parser's urlencoded parsing
 app.use(express.urlencoded({ extended: false }));
-// Tell express to use body-parser's JSON parsing
+// Tell express to use body-parser's JSON and text parsing
 app.use(express.json());
+app.use(express.text());
 
 // Configurar Cabeseras y CORS
 app.use(cors());
