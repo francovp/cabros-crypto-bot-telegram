@@ -1,6 +1,6 @@
 const { getPrice, cryptoBotCmd } = require('./src/controllers/commands');
 const app = require('./app.js');
-const { Telegraf } = require('telegraf');
+const { Telegraf, Markup } = require('telegraf');
 const { getRoutes } = require('./src/routes');
 require('dotenv').config();
 
@@ -16,7 +16,7 @@ const now = new Date();
 
 app.use('/api', getRoutes(bot));
 
-app.listen(port, () => {
+app.listen(port, async () => {
 	console.log(now + ' - Running server on port ' + port);
 
 	const telegramBotIsEnabled = process.env.ENABLE_TELEGRAM_BOT === 'true';
@@ -29,11 +29,24 @@ app.listen(port, () => {
 		bot = new Telegraf(token);
 		bot.command(['precio'], getPrice);
 		bot.command(['cryptobot'], cryptoBotCmd);
-		bot.launch();
+		await bot.launch();
 
 		// Enable graceful stop
 		process.once('SIGINT', () => bot.stop('SIGINT'));
 		process.once('SIGTERM', () => bot.stop('SIGTERM'));
+
+		if (process.env.TELEGRAM_ADMIN_NOTIFICATIONS_CHAT_ID !== undefined) {
+			console.log('Telegram Admin Notifications Chat ID:', process.env.TELEGRAM_ADMIN_NOTIFICATIONS_CHAT_ID);
+			let text, commitHash, gitCommitUrl;
+			if (process.env.RENDER) {
+				commitHash = process.env.RENDER_GIT_COMMIT.substring(0, 6);
+				gitCommitUrl = `https://github.com/${process.env.RENDER_GIT_REPO_SLUG}/commit/${commitHash}`;
+				console.log(`Telegram bot deployed from commit ${gitCommitUrl} is running`);
+				text = `*Telegram bot deployed from commit [${commitHash}](${gitCommitUrl}) is running*`;
+			}
+			await bot.telegram.sendMessage(
+				process.env.TELEGRAM_ADMIN_NOTIFICATIONS_CHAT_ID, text, { parse_mode: 'MarkdownV2' });
+		}
 	}
 });
 
