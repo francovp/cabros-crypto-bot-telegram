@@ -12,7 +12,10 @@ function postAlert(bot) {
 			} else {
 				text = body;
 			}
-			await bot.telegram.sendMessage(chatId, text, { parse_mode: 'MarkdownV2' });
+			if (bot != undefined) {
+				console.debug('Sending message to telegram chat ID' + chatId);
+				await bot.telegram.sendMessage(chatId, text, { parse_mode: 'MarkdownV2' });
+			}
 			res.sendStatus(200);
 		} catch (error) {
 			console.debug('webhook/alert handler: Error sending message to bot');
