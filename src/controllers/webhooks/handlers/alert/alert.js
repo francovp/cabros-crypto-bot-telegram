@@ -6,7 +6,7 @@ function postAlert(bot) {
 	return async (req, res) => {
 		const { body } = req;
 		try {
-			await bot.telegram.sendMessage(chatId, `${body.text}`, { parse_mode: body.parseMode });
+			await bot.telegram.sendMessage(chatId, `${body.text}`, { parse_mode: 'MarkdownV2' });
 			res.sendStatus(200);
 		} catch (error) {
 			console.debug('webhook/alert handler: Error sending message to bot');
