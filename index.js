@@ -14,8 +14,6 @@ let bot;
 const port = process.env.PORT || 80;
 const now = new Date();
 
-app.use('/api', getRoutes(bot));
-
 app.listen(port, async () => {
 	console.log(now + ' - Running server on port ' + port);
 
@@ -30,6 +28,8 @@ app.listen(port, async () => {
 		bot.command(['precio'], getPrice);
 		bot.command(['cryptobot'], cryptoBotCmd);
 		await bot.launch();
+
+		app.use('/api', getRoutes(bot));
 
 		// Enable graceful stop
 		process.once('SIGINT', () => bot.stop('SIGINT'));
